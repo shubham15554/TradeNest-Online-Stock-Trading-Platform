@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import Dashboard from "./Dashboard";
 import TopBar from "./TopBar";
 import { UserProvider, UserContext } from "./userContext";
@@ -7,81 +7,92 @@ import { PriceProvider } from "./PriceProvider";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 const HomeContent = () => {
   const { user, setUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const verifyCookie = async () => {
-      try{
+    const retrieveToken = async () => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const tempKey = params.get("transfer_id");
 
-        // First, try to read token from URL
-      const params = new URLSearchParams(window.location.search);
-      let token = params.get("token");
+        let token;
 
-      if (token) {
-        // Store it in localStorage for future use
-        localStorage.setItem("token", token);
+        if (tempKey) {
+          // Fetch real JWT from backend using tempKey
+          const res = await axios.get(`http://localhost:3002/user/retrieve-token?id=${tempKey}`);
+          
+          if (res.data.token && res.data.user) {
+            token = res.data.token;
 
-        // Clean the URL
-        window.history.replaceState({}, '', '/');
-      } else {
-        // If no token in URL, try localStorage
-        token = localStorage.getItem("token");
-      }
+            // Store JWT in localStorage for now
+            localStorage.setItem("token", token);
 
-      if (!token) {
-        toast.error("No token found. Please login.");
-        window.location.href = "http://localhost:3000/Login";
-        return;
-      }
-      
-      // Verify token with backend
-   
-      const res = await axios.get(
-        "http://localhost:3002/getUser",
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      
+            // Clean URL
+            window.history.replaceState({}, '', '/');
 
-      if (!res.data.user) {
+            // Set user in context
+            setUser(res.data.user);
+            toast.success(`Welcome, ${res.data.user.username}!`);
+          } else {
+            toast.error("Token retrieval failed. Please login.");
+            window.location.href = "http://localhost:3000/Login";
+            return;
+          }
+        } else {
+          // Try localStorage if no tempKey in URL
+          token = localStorage.getItem("token");
+
+          if (!token) {
+            toast.error("No token found. Please login.");
+            window.location.href = "http://localhost:3000/Login";
+            return;
+          }
+
+          // Verify token with backend
+          const res = await axios.get("http://localhost:3002/getUser", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          if (!res.data.user) {
+            toast.error("Verification failed. Please login.");
+            window.location.href = "http://localhost:3000/Login";
+            return;
+          }
+
+          setUser(res.data.user);
+        }
+      } catch (err) {
+        console.error(err);
         toast.error("Verification failed. Please login.");
         window.location.href = "http://localhost:3000/Login";
-      } else {
-        setUser(res.data.user);
-        toast.success(`Welcome, ${res.data.user.username}!`);
+      } finally {
+        setLoading(false);
       }
-      }
-    catch (err) {
-      console.error(err);
-      toast.error("Verification failed. Please login.");
-      window.location.href = "http://localhost:3000/Login";
-    }
-
     };
 
-    verifyCookie();
+    retrieveToken();
   }, [setUser]);
 
-  if (!user) return <p>Loading...</p>;
+  if (loading || !user) return <p>Loading...</p>;
 
   return (
     <>
       <TopBar username={user.username} />
       <Dashboard user={user} />
+      <ToastContainer />
     </>
   );
 };
 
 const Home = () => {
   return (
-  
     <UserProvider>
       <PriceProvider>
-      <HomeContent />
+        <HomeContent />
       </PriceProvider>
     </UserProvider>
-    
   );
 };
 

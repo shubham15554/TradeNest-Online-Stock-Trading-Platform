@@ -1,6 +1,7 @@
 import React, { useState , Navigate } from "react";
 import axios from "axios"
 import {toast} from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 function Main() {
 
     const [form , setForm] = useState({username : "" , email : "" , password: "" });
@@ -9,21 +10,33 @@ function Main() {
         setForm({...form , [e.target.name] : e.target.value });
     }
 
+    const navigate = useNavigate();
+
     async function  onSubmit(e){
         e.preventDefault(); 
         console.log(form);
-        let res = await axios.post("http://localhost:3002/user/login" , form ,);
+        try{
+            let res = await axios.post("http://localhost:3002/user/login" , form ,);
 
-        if(res.data.success){
-            localStorage.setItem("token", res.data.token);
-            localStorage.setItem("user", JSON.stringify(res.data.user));
-            window.location.href = `http://localhost:3001?token=${res.data.token}`;      // dashboard
+            if (res.data.user && res.data.success) {
+                // Redirect to dashboard with tempKey instead of token
+                window.location.href = `http://localhost:3001?transfer_id=${res.data.tempKey}`;
+            }else if (!res.data.user) {
+                navigate("/Login");
+                toast.error(res.data.message);
+            } else {
+                navigate("/Login");
+                toast.error("Signup failed. Please try again.");
+            }
+
+            setForm({username : "" , email : "" , password: "" });
         }
-        else {
-            console.log("login fail" , res.data.success);
-            toast.error(res.data.message);
+        catch(err){
+            navigate("/Login");
+            console.log("Login failed");
+            toast.error("Login failed");
+            
         }
-        setForm({username : "" , email : "" , password: "" });
        
     }
     return ( 

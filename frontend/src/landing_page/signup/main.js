@@ -12,36 +12,30 @@ function Main() {
         setForm({...form , [e.target.name] : e.target.value });
     }
 
-    async function onSubmit(e){
-      try{
-        
-        e.preventDefault(); 
-        let res = await axios.post("http://localhost:3002/user/signup" , form);
-        if(res.data.user && res.data.success){
+        async function onSubmit(e) {
+        try {
+            e.preventDefault();
+            let res = await axios.post("http://localhost:3002/user/signup", form);
 
-            localStorage.setItem("token", res.data.token);
-            localStorage.setItem("user", JSON.stringify(res.data.user));
-            window.location.href = `http://localhost:3001?token=${res.data.token}`;   // dashboard
-            
-        }
-        else if(!res.data.user){
+            if (res.data.user && res.data.success) {
+            // Redirect to dashboard with tempKey instead of token
+            window.location.href = `http://localhost:3001?transfer_id=${res.data.tempKey}`;
+            } else if (!res.data.user) {
             navigate("/signup");
-            console.log("user nhi mila")
             toast.error(res.data.message);
-        }
-        else{
-           navigate("/signup");
-           toast.error("Signup failed. Please try again.");
-        }
-        setForm({username : "" , email : "" , password: "" });
-      }
-      catch(err){
-        navigate("/signup");
-        toast.error("Signup failed. Please try again. error aa gay ");
-        console.log(err.response);
-      }
+            } else {
+            navigate("/signup");
+            toast.error("Signup failed. Please try again.");
+            }
 
-    }
+            setForm({ username: "", email: "", password: "" });
+        } catch (err) {
+            navigate("/signup");
+            toast.error("Signup failed. Please try again.");
+            console.log(err.response);
+        }
+        }
+
 
     return ( 
         <div className="container">

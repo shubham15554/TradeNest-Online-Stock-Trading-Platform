@@ -14,9 +14,11 @@ router.post("/signup" , wrapasync(userController.signup));
 
 router.post("/login" , wrapasync(userController.login));
 
-router.post("/logout" , userController.logout);
+// router.post("/logout" , userController.logout);
 
 router.post("/:id/addFund" , wrapasync(userController.addFund));
+
+router.get("/retrieve-token" , userController.retrieveToken);
 
 
 
