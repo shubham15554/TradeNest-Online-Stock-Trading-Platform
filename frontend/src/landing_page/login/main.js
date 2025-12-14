@@ -12,11 +12,12 @@ function Main() {
     async function  onSubmit(e){
         e.preventDefault(); 
         console.log(form);
-        let res = await axios.post("http://localhost:3002/user/login" , form ,  { withCredentials: true } );
+        let res = await axios.post("http://localhost:3002/user/login" , form ,);
 
         if(res.data.success){
-
-            window.location.href = "http://localhost:3001";
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("user", JSON.stringify(res.data.user));
+            window.location.href = `http://localhost:3001?token=${res.data.token}`;      // dashboard
         }
         else {
             console.log("login fail" , res.data.success);

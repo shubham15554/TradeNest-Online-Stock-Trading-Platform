@@ -8,18 +8,18 @@ const orderModel = require("../models/orderModel");
 const orderController = require("../controllers/order");
 const {watchlist} = require ("../data/data");
 const wrapasync = require("../util/wrapasync");
-const {verify} = require("../middleware/verify");
+const {getUser} = require("../middleware/verify");
 
 
-router.post("/newOrder/buy" ,verify, wrapasync(orderController.byuOrder));
+router.post("/newOrder/buy" ,getUser, wrapasync(orderController.byuOrder));
 
-router.post("/newOrder/sell" ,verify, wrapasync(orderController.sellOrder));
+router.post("/newOrder/sell" ,getUser, wrapasync(orderController.sellOrder));
 
-router.post("/buyPendingOrder/:orderId" ,verify, wrapasync(orderController.buyPendingOrder));
+router.post("/buyPendingOrder/:orderId" ,getUser, wrapasync(orderController.buyPendingOrder));
 
-router.post("/sellPendingOrder/:orderId" , verify, wrapasync(orderController.sellPendingOrder));
+router.post("/sellPendingOrder/:orderId" , getUser, wrapasync(orderController.sellPendingOrder));
 
-router.get("/allOrders"  , verify, wrapasync(orderController.allOrders))
+router.get("/allOrders"  , getUser, wrapasync(orderController.allOrders))
 
 
 module.exports = router;

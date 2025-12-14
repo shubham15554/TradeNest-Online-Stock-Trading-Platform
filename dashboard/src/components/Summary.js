@@ -3,15 +3,18 @@ import { UserContext } from "./userContext";
 import { useContext , useState , useEffect} from "react";       
 import axios from "axios";  
 import { PriceContext } from "./PriceProvider";
-
+const token = localStorage.getItem("token");
 const Summary = () => {
     const { user , setUser} = useContext(UserContext);
     let [allHoldings , setAllHoldings] = useState([]);
     let {watchlist} = useContext(PriceContext);
+   
     useEffect(()=>{
-      axios.get("http://localhost:3002/allHoldings" , {withCredentials: true}).then((res)=>{
+      if(token){
+        axios.get("http://localhost:3002/allHoldings" , { headers: { Authorization: `Bearer ${token}` } }).then((res)=>{
         setAllHoldings(res.data);
       })
+      }
       
     } , []);
 
@@ -28,7 +31,7 @@ const Summary = () => {
       }, 0);
   }
 
-  let currValue = calculateCurrentValue(allHoldings);
+  let currValue =    calculateCurrentValue(allHoldings);
   let investment = calculateInvestment(allHoldings);
 
 
@@ -71,7 +74,7 @@ const Summary = () => {
         <div className="data">
           <div className="first">
             <h3 className="profit">
-              {(currValue - investment).toFixed(2)}<small>{ (((currValue - investment) / (investment) ) * 100).toFixed(2)}%</small>{" "}
+              {(currValue - investment).toFixed(2)}<small>{ (((currValue - investment) / (investment) ) * 100).toFixed(2)}%</small>
             </h3>
             <p>P&L</p>
           </div>

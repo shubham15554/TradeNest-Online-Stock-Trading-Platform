@@ -15,20 +15,17 @@ module.exports.signup =  async (req , res , next)=>{
     }
     const user = await User.create({ email, password, username, createdAt });
     const token = createSecretToken(user._id);
-    res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: false, // true in production with HTTPS
+    res.status(201).json({
+      message: "User signed in successfully",
+      success: true,
+      token, // send JWT in response body
+      user,  // optional user info
     });
    
-    console.log("uesr created");
-    res
-      .status(201)
-      .json({ message: "User signed in successfully", success: true, user });
-    
     
   } catch (error) {
     console.error(error);
+    return res.status(500).json({ message: "Server error", error });
   }
 
 
@@ -57,13 +54,14 @@ module.exports.login = async (req , res)=>{
       return res.json({message:'Incorrect password or email' }) 
     }
     const token = createSecretToken(user._id);
-     res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: false, // true in production with HTTPS
-     });
+    res.status(201).json({
+      message: "User logged in successfully",
+      success: true,
+      token, // send JWT in response body
+      user,  // optional user info
+    });
     
-     res.status(201).json({ message: "User logged in successfully", success: true });
+     
 
   } catch (error) {
     console.error(error);

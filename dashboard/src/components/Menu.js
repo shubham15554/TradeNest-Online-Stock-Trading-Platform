@@ -21,22 +21,9 @@ const Menu = ({username}) => {
     const activeClass = "menu selected";
     
     function handleLogoutClick(){
-        axios.post(
-        "http://localhost:3002/user/logout",
-        {},
-        { withCredentials: true }
-      )
-      .then(() => {
-        window.location.href = "http://localhost:3000/Login";
-        console.log("successfully Logedout");
-        
-      })
-      .catch((err) => {
-        console.error("Logout failed", err);
-        toast.error("Logout failed, try again.");
-      });
-
-
+        localStorage.removeItem("token");
+        setUser(null);
+         window.location.href = "http://localhost:3000/Login";
     }
 
   return (

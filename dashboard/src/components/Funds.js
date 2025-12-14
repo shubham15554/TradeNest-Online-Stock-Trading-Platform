@@ -11,9 +11,9 @@ import { toast } from "react-toastify";
 const Funds = () => {
 
     let [isWindowOpen , setIsWidowOpen] = useState(false);
-
+    const  token = localStorage.getItem("token");
     let { user, setUser } = useContext(UserContext);
-    
+  
     function handleOnClick(){
       setIsWidowOpen(!isWindowOpen)
     }
@@ -22,10 +22,13 @@ const Funds = () => {
     console.log(user._id);
    
   try {
-    const res = await axios.post(
+
+    if(token){
+      const res = await axios.post(
       `http://localhost:3002/user/${user._id}/addFund`,
-      { amount },{withCredentials: true}
+      { amount },{ headers: { Authorization: `Bearer ${token}` }}
     );
+    
 
     // Update the user in context
 
@@ -37,6 +40,7 @@ const Funds = () => {
     else{
        toast.error(res.data.message);
     }
+   }
     
    
 

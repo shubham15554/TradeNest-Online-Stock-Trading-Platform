@@ -16,13 +16,17 @@ function Main() {
       try{
         
         e.preventDefault(); 
-        let res = await axios.post("http://localhost:3002/user/signup" , form ,{ withCredentials: true });
+        let res = await axios.post("http://localhost:3002/user/signup" , form);
         if(res.data.user && res.data.success){
-            window.location.href = "http://localhost:3001";
+
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("user", JSON.stringify(res.data.user));
+            window.location.href = `http://localhost:3001?token=${res.data.token}`;   // dashboard
             
         }
         else if(!res.data.user){
             navigate("/signup");
+            console.log("user nhi mila")
             toast.error(res.data.message);
         }
         else{
@@ -33,8 +37,8 @@ function Main() {
       }
       catch(err){
         navigate("/signup");
-        toast.error("Signup failed. Please try again.");
-        console.log(err);
+        toast.error("Signup failed. Please try again. error aa gay ");
+        console.log(err.response);
       }
 
     }

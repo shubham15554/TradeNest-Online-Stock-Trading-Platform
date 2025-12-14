@@ -5,6 +5,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "./userContext";
 import { toast } from "react-toastify";
+
 export const PriceContext = createContext();
 
 
@@ -15,10 +16,12 @@ export const PriceProvider = ({ children }) => {
  
   let {user , setUser} = useContext(UserContext);
   
+  const token = localStorage.getItem("token");
 
   useEffect( () => {
+    if(token){
      const interval = setInterval(async () => {
-     const res = await axios.get("http://localhost:3002/order/allOrders" , {withCredentials: true});
+     let res = await axios.get(`http://localhost:3002/order/allOrders`, { headers: { Authorization: `Bearer ${token}` } });
      const orders = res.data;
      console.log("Fetched all orders for price update check:" , orders);
       setWatchlist(prev =>
@@ -33,7 +36,7 @@ export const PriceProvider = ({ children }) => {
               // execute buy pending  orders
                 try{
                   const excute = async ()=>{
-                  let res = await axios.post(`http://localhost:3002/order/buyPendingOrder/${order._id}` , {currPrice : newPrice} , {withCredentials: true});
+                  let res = await axios.post(`http://localhost:3002/order/buyPendingOrder/${order._id}` , {currPrice : newPrice} , { headers: { Authorization: `Bearer ${token}` } });
                   console.log("Executed pending buy order:" , res.data);
                   toast.success("Executed pending buy order");
                   setUser(res.data.user);
@@ -54,7 +57,7 @@ export const PriceProvider = ({ children }) => {
               // execute sell pending orders
               try{
                  const excute = async ()=>{
-                  let res = await axios.post(`http://localhost:3002/order/sellPendingOrder/${order._id}` , {currPrice : newPrice} , {withCredentials: true});
+                  let res = await axios.post(`http://localhost:3002/order/sellPendingOrder/${order._id}` , {currPrice : newPrice} , { headers: { Authorization: `Bearer ${token}` } });
                   console.log("Executed pending buy order:" , res.data);
                   toast.success("Executed pending sell order");
                 }
@@ -69,9 +72,6 @@ export const PriceProvider = ({ children }) => {
               
             }
           }
-
-
-
           return {
             ...stock,
             prevPrice: stock.price,
@@ -79,20 +79,17 @@ export const PriceProvider = ({ children }) => {
             percent: `${percentChange}%`,
             isDown: percentChange < 0
           };
+
         })
-
-
-
-
-
-
-
 
       );
     }, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+
+    }
+    
+  }, [token]);
 
   return (
     <PriceContext.Provider value={{ watchlist }}>
@@ -100,3 +97,6 @@ export const PriceProvider = ({ children }) => {
     </PriceContext.Provider>
   );
 };
+
+
+

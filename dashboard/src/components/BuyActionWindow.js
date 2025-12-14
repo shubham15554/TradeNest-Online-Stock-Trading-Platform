@@ -20,7 +20,7 @@ const BuyActionWindow = ({ uid }) => {
     const [productType, setProductType] = useState("CNC");
     const [orderType, setOrderType] = useState("Market");
     const [marginRequired, setMarginRequired] = useState(0);
-
+    const  token = localStorage.getItem("token");
       // Get stock data and margin
       useEffect(() => {
         const stock = watchlist.find((s) => s.name === uid);
@@ -48,7 +48,7 @@ const BuyActionWindow = ({ uid }) => {
           productType: productType,
           limitPrice: limitPrice,   //user ne kitne pr limit order lagaya hai
         },
-        {withCredentials: true}
+        { headers: { Authorization: `Bearer ${token}` }}
 
       );
 

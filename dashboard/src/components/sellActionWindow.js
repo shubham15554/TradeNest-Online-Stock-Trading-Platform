@@ -20,7 +20,8 @@ const SellActionWindow = ({ uid }) => {
     let [productType, setProductType] = useState("CNC");
     let [orderType, setOrderType] = useState("Market");
     let [marginRequired, setMarginRequired] = useState(0);
-
+    
+   const token = localStorage.getItem("token");
 
     const handleCancelClick = () => {
     sellContext.closeSellWindow();
@@ -37,7 +38,7 @@ const SellActionWindow = ({ uid }) => {
                 orderType: orderType,
                 productType: productType,
                 limitPrice: limitPrice,   //user ne kitne pr limit order lagaya hai
-            },{withCredentials: true});
+            },{ headers: { Authorization: `Bearer ${token}` } });
 
             setUser(res.data.user);
             console.log(res.data);
@@ -59,7 +60,7 @@ const SellActionWindow = ({ uid }) => {
           
           if(orderType === "Market"){
             if(productType === "CNC"){
-                const res  = await axios.get(`http://localhost:3002/allHoldings` , {withCredentials: true});
+                const res  = await axios.get(`http://localhost:3002/allHoldings` ,  { headers: { Authorization: `Bearer ${token}` } });
                 const allHoldings = res.data;
                 const holding = allHoldings.find((h) => h.name === uid);
                 if(!holding || holding.qty < stockQty){
@@ -74,7 +75,7 @@ const SellActionWindow = ({ uid }) => {
             }
             else{
                 // MIS sell order logic 
-                const res  = await axios.get(`http://localhost:3002/allPositions` , {withCredentials: true});
+                const res  = await axios.get(`http://localhost:3002/allPositions` , { headers: { Authorization: `Bearer ${token}` } });
                 const allPositions = res.data;
                 const position = allPositions.find((p) => p.name === uid);
                 if(!position || position.qty < stockQty){
@@ -95,7 +96,7 @@ const SellActionWindow = ({ uid }) => {
                 return;
             }
             if(productType === "CNC"){
-                const res  = await axios.get(`http://localhost:3002/allHoldings` , {withCredentials: true});
+                const res  = await axios.get(`http://localhost:3002/allHoldings` , { headers: { Authorization: `Bearer ${token}` } });
                 const allHoldings = res.data;
                 const holding = allHoldings.find((h) => h.name === uid);
                 if(!holding || holding.qty < stockQty){
@@ -109,7 +110,7 @@ const SellActionWindow = ({ uid }) => {
             }
             else{
                 // MIS sell order logic 
-                const res  = await axios.get(`http://localhost:3002/allPositions` , {withCredentials: true});
+                const res  = await axios.get(`http://localhost:3002/allPositions` ,  { headers: { Authorization: `Bearer ${token}` } });
                 const allPositions = res.data;
                 const position = allPositions.find((p) => p.name === uid); 
                 if(!position || position.qty < stockQty){

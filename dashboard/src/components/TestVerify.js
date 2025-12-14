@@ -8,7 +8,7 @@ const TestVerify = () => {
     const verifyCookie = async () => {
       try {
         const { data } = await axios.post(
-          "http://localhost:3002/verify",
+          "https://tradenest-online-stock-trading-platform.onrender.com/verify",
           {}, // POST body (empty object if your backend doesn't need data)
           {
             withCredentials: true, // important: sends the cookie automatically

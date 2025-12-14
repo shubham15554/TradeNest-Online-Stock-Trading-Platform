@@ -21,13 +21,14 @@ const orderRouter = require("./routes/order");
 app.use(cookieParser());
 const wrapasync = require("./util/wrapasync");
 
-const {verify} = require("./middleware/verify");
+const {getUser} = require("./middleware/verify");
 
 // CORS config for multiple frontends
 app.use(
   cors({
     origin: ["http://localhost:3000" , "http://localhost:3001"],
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Component']
   })
 );
 
@@ -41,7 +42,9 @@ app.use("/user" , userRouter);
 app.use("/order" , orderRouter);
 
 
-app.get("/allHoldings" , verify, wrapasync(async (req , res)=>{
+
+
+app.get("/allHoldings" , getUser, wrapasync(async (req , res)=>{
  
   const userId = req.user._id;
   let allHoldings =  await holdingModel.find({user:userId});
@@ -52,7 +55,7 @@ app.get("/allHoldings" , verify, wrapasync(async (req , res)=>{
 
 
 
-app.get("/allPositions" ,verify, wrapasync(async (req , res)=>{
+app.get("/allPositions" ,getUser, wrapasync(async (req , res)=>{
   const userId = req.user._id;
   let allPostiions =  await positionModel.find({user:userId});
   res.json(allPostiions);
@@ -61,7 +64,7 @@ app.get("/allPositions" ,verify, wrapasync(async (req , res)=>{
 
 
 
-app.post("/verify" , verify,  (req, res) => {
+app.get("/getUser" , getUser,  (req, res) => {
 
   const user = req.user; 
     console.log("next ke baad yha aa gya hai", user);
@@ -83,9 +86,6 @@ app.use((err, req, res, next) => {
 
   res.status(statusCode).json({ message });
 });
-
-
-
 
 app.listen(PORT , ()=>{
 

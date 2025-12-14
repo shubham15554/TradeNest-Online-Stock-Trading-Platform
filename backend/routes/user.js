@@ -16,7 +16,7 @@ router.post("/login" , wrapasync(userController.login));
 
 router.post("/logout" , userController.logout);
 
-router.post("/:id/addFund" ,verify, wrapasync(userController.addFund));
+router.post("/:id/addFund" , wrapasync(userController.addFund));
 
 
 

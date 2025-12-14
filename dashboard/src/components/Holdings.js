@@ -13,11 +13,14 @@ const Holdings = () => {
   let [allHoldings , setAllHoldings] = useState([]);
   let { watchlist } = useContext(PriceContext);
   let {user , setUser} = useContext(UserContext);
-
+  const  token = localStorage.getItem("token");
   useEffect(()=>{
-    axios.get(`http://localhost:3002/allHoldings` , {withCredentials: true}).then((res)=>{
-      setAllHoldings(res.data);
+    
+    if(token){
+        axios.get(`http://localhost:3002/allHoldings` ,{ headers: { Authorization: `Bearer ${token}` }}).then((res)=>{
+        setAllHoldings(res.data);
     })
+    }
     
   } , [allHoldings]);
 

@@ -11,10 +11,13 @@ const Positions = () => {
   let [allPostiions , setAllPostions] = useState([]);
   let { watchlist } = useContext(PriceContext);
   let {user , setUser} = useContext(UserContext);
+  const token = localStorage.getItem("token");
   useEffect(()=>{
-      axios.get(`http://localhost:3002/allPositions`  , {withCredentials: true}).then((res)=>{
+      if(token){
+        axios.get(`http://localhost:3002/allPositions` , { headers: { Authorization: `Bearer ${token}` } } ).then((res)=>{
         setAllPostions(res.data);
       })
+      }
   } , [allPostiions]);
 
 
