@@ -30,7 +30,7 @@ const SellActionWindow = ({ uid }) => {
 
     const placeOrder = async () => {
        try{
-            const res = await axios.post(`http://localhost:3002/order/newOrder/sell` , {
+            const res = await axios.post(`https://tradenest-online-stock-trading-platform.onrender.com/order/newOrder/sell` , {
                 name: uid,
                 qty: stockQty,
                 price: stock.price,    /// stock ka actual price
@@ -60,7 +60,7 @@ const SellActionWindow = ({ uid }) => {
           
           if(orderType === "Market"){
             if(productType === "CNC"){
-                const res  = await axios.get(`http://localhost:3002/allHoldings` ,  { headers: { Authorization: `Bearer ${token}` } });
+                const res  = await axios.get(`https://tradenest-online-stock-trading-platform.onrender.com/allHoldings` ,  { headers: { Authorization: `Bearer ${token}` } });
                 const allHoldings = res.data;
                 const holding = allHoldings.find((h) => h.name === uid);
                 if(!holding || holding.qty < stockQty){
@@ -75,7 +75,7 @@ const SellActionWindow = ({ uid }) => {
             }
             else{
                 // MIS sell order logic 
-                const res  = await axios.get(`http://localhost:3002/allPositions` , { headers: { Authorization: `Bearer ${token}` } });
+                const res  = await axios.get(`https://tradenest-online-stock-trading-platform.onrender.com/allPositions` , { headers: { Authorization: `Bearer ${token}` } });
                 const allPositions = res.data;
                 const position = allPositions.find((p) => p.name === uid);
                 if(!position || position.qty < stockQty){
@@ -96,7 +96,7 @@ const SellActionWindow = ({ uid }) => {
                 return;
             }
             if(productType === "CNC"){
-                const res  = await axios.get(`http://localhost:3002/allHoldings` , { headers: { Authorization: `Bearer ${token}` } });
+                const res  = await axios.get(`https://tradenest-online-stock-trading-platform.onrender.com/allHoldings` , { headers: { Authorization: `Bearer ${token}` } });
                 const allHoldings = res.data;
                 const holding = allHoldings.find((h) => h.name === uid);
                 if(!holding || holding.qty < stockQty){
@@ -110,7 +110,7 @@ const SellActionWindow = ({ uid }) => {
             }
             else{
                 // MIS sell order logic 
-                const res  = await axios.get(`http://localhost:3002/allPositions` ,  { headers: { Authorization: `Bearer ${token}` } });
+                const res  = await axios.get(`https://tradenest-online-stock-trading-platform.onrender.com/allPositions` ,  { headers: { Authorization: `Bearer ${token}` } });
                 const allPositions = res.data;
                 const position = allPositions.find((p) => p.name === uid); 
                 if(!position || position.qty < stockQty){

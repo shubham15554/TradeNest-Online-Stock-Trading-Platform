@@ -25,7 +25,7 @@ const Funds = () => {
 
     if(token){
       const res = await axios.post(
-      `http://localhost:3002/user/${user._id}/addFund`,
+      `https://tradenest-online-stock-trading-platform.onrender.com/user/${user._id}/addFund`,
       { amount },{ headers: { Authorization: `Bearer ${token}` }}
     );
     

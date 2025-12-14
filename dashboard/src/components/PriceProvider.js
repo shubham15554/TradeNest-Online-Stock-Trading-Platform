@@ -21,7 +21,7 @@ export const PriceProvider = ({ children }) => {
   useEffect( () => {
     if(token){
      const interval = setInterval(async () => {
-     let res = await axios.get(`http://localhost:3002/order/allOrders`, { headers: { Authorization: `Bearer ${token}` } });
+     let res = await axios.get(`https://tradenest-online-stock-trading-platform.onrender.com/order/allOrders`, { headers: { Authorization: `Bearer ${token}` } });
      const orders = res.data;
      console.log("Fetched all orders for price update check:" , orders);
       setWatchlist(prev =>
@@ -36,7 +36,7 @@ export const PriceProvider = ({ children }) => {
               // execute buy pending  orders
                 try{
                   const excute = async ()=>{
-                  let res = await axios.post(`http://localhost:3002/order/buyPendingOrder/${order._id}` , {currPrice : newPrice} , { headers: { Authorization: `Bearer ${token}` } });
+                  let res = await axios.post(`https://tradenest-online-stock-trading-platform.onrender.com/order/buyPendingOrder/${order._id}` , {currPrice : newPrice} , { headers: { Authorization: `Bearer ${token}` } });
                   console.log("Executed pending buy order:" , res.data);
                   toast.success("Executed pending buy order");
                   setUser(res.data.user);
@@ -57,7 +57,7 @@ export const PriceProvider = ({ children }) => {
               // execute sell pending orders
               try{
                  const excute = async ()=>{
-                  let res = await axios.post(`http://localhost:3002/order/sellPendingOrder/${order._id}` , {currPrice : newPrice} , { headers: { Authorization: `Bearer ${token}` } });
+                  let res = await axios.post(`https://tradenest-online-stock-trading-platform.onrender.com/order/sellPendingOrder/${order._id}` , {currPrice : newPrice} , { headers: { Authorization: `Bearer ${token}` } });
                   console.log("Executed pending buy order:" , res.data);
                   toast.success("Executed pending sell order");
                 }

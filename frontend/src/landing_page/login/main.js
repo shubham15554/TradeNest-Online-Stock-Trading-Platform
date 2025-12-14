@@ -16,11 +16,11 @@ function Main() {
         e.preventDefault(); 
         console.log(form);
         try{
-            let res = await axios.post("http://localhost:3002/user/login" , form ,);
+            let res = await axios.post("https://tradenest-online-stock-trading-platform.onrender.com/user/login" , form ,);
 
             if (res.data.user && res.data.success) {
                 // Redirect to dashboard with tempKey instead of token
-                window.location.href = `http://localhost:3001?transfer_id=${res.data.tempKey}`;
+                window.location.href = `https://tradenest-online-stock-trading-platform-2.onrender.com?transfer_id=${res.data.tempKey}`;
             }else if (!res.data.user) {
                 navigate("/Login");
                 toast.error(res.data.message);

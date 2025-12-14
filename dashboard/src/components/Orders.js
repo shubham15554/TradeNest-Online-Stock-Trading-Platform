@@ -13,7 +13,7 @@ const Orders = () => {
     const token = localStorage.getItem("token");
     useEffect(()=>{
         if(token){
-          axios.get(`http://localhost:3002/order/allOrders` ,  { headers: { Authorization: `Bearer ${token}` }} ).then((res)=>{
+          axios.get(`https://tradenest-online-stock-trading-platform.onrender.com/order/allOrders` ,  { headers: { Authorization: `Bearer ${token}` }} ).then((res)=>{
           setOrder(res.data);
         })
         }

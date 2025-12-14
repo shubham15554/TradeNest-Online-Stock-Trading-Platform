@@ -21,7 +21,7 @@ const HomeContent = () => {
 
         if (tempKey) {
           // Fetch real JWT from backend using tempKey
-          const res = await axios.get(`http://localhost:3002/user/retrieve-token?id=${tempKey}`);
+          const res = await axios.get(`https://tradenest-online-stock-trading-platform.onrender.com/user/retrieve-token?id=${tempKey}`);
           
           if (res.data.token && res.data.user) {
             token = res.data.token;
@@ -37,7 +37,7 @@ const HomeContent = () => {
             toast.success(`Welcome, ${res.data.user.username}!`);
           } else {
             toast.error("Token retrieval failed. Please login.");
-            window.location.href = "http://localhost:3000/Login";
+            window.location.href = "https://tradenest-online-stock-trading-platform-1.onrender.com/Login";
             return;
           }
         } else {
@@ -46,18 +46,18 @@ const HomeContent = () => {
 
           if (!token) {
             toast.error("No token found. Please login.");
-            window.location.href = "http://localhost:3000/Login";
+            window.location.href = "https://tradenest-online-stock-trading-platform-1.onrender.com/Login";
             return;
           }
 
           // Verify token with backend
-          const res = await axios.get("http://localhost:3002/getUser", {
+          const res = await axios.get("https://tradenest-online-stock-trading-platform.onrender.com/getUser", {
             headers: { Authorization: `Bearer ${token}` },
           });
 
           if (!res.data.user) {
             toast.error("Verification failed. Please login.");
-            window.location.href = "http://localhost:3000/Login";
+            window.location.href = "https://tradenest-online-stock-trading-platform-1.onrender.com/Login";
             return;
           }
 
@@ -66,7 +66,7 @@ const HomeContent = () => {
       } catch (err) {
         console.error(err);
         toast.error("Verification failed. Please login.");
-        window.location.href = "http://localhost:3000/Login";
+        window.location.href = "https://tradenest-online-stock-trading-platform-1.onrender.com/Login";
       } finally {
         setLoading(false);
       }

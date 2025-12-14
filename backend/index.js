@@ -26,7 +26,7 @@ const {getUser} = require("./middleware/verify");
 // CORS config for multiple frontends
 app.use(
   cors({
-    origin: ["http://localhost:3000" , "http://localhost:3001"],
+    origin: ["https://tradenest-online-stock-trading-platform-1.onrender.com" , "https://tradenest-online-stock-trading-platform-2.onrender.com"],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Component']
   })

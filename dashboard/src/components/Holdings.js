@@ -17,7 +17,7 @@ const Holdings = () => {
   useEffect(()=>{
     
     if(token){
-        axios.get(`http://localhost:3002/allHoldings` ,{ headers: { Authorization: `Bearer ${token}` }}).then((res)=>{
+        axios.get(`https://tradenest-online-stock-trading-platform.onrender.com/allHoldings` ,{ headers: { Authorization: `Bearer ${token}` }}).then((res)=>{
         setAllHoldings(res.data);
     })
     }

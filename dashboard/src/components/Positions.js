@@ -14,7 +14,7 @@ const Positions = () => {
   const token = localStorage.getItem("token");
   useEffect(()=>{
       if(token){
-        axios.get(`http://localhost:3002/allPositions` , { headers: { Authorization: `Bearer ${token}` } } ).then((res)=>{
+        axios.get(`https://tradenest-online-stock-trading-platform.onrender.com/allPositions` , { headers: { Authorization: `Bearer ${token}` } } ).then((res)=>{
         setAllPostions(res.data);
       })
       }

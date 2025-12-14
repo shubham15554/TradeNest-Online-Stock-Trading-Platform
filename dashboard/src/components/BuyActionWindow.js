@@ -38,7 +38,7 @@ const BuyActionWindow = ({ uid }) => {
     try {
       const res = await axios.post(
         
-        `http://localhost:3002/order/newOrder/buy`,
+        `https://tradenest-online-stock-trading-platform.onrender.com/order/newOrder/buy`,
         {
           name: uid,
           qty: stockQty,
