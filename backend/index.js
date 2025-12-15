@@ -26,7 +26,7 @@ const {getUser} = require("./middleware/verify");
 // CORS config for multiple frontends
 app.use(
   cors({
-    origin: ["tradenest-frontend.vercel.app" , "tradenest-dashboard.vercel.app"],
+    origin: ["https://trade-nest-online-stock-trading-pla.vercel.app" , "https://tradenest-dashboard-7rrx.vercel.app"],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Component']
   })
