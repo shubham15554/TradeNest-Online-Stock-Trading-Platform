@@ -16,19 +16,9 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
-// ---------------- Backend warm-up function ----------------
-const warmUpBackend = () => {
-  axios.get(`${import.meta.env.VITE_API_URL}/health`, { withCredentials: true })
-    .catch(() => {
-      // ignore errors, just wake backend
-    });
-};
-// -----------------------------------------------------------
 
 const App = () => {
-  useEffect(() => {
-    warmUpBackend(); // 🔥 wakes backend in parallel
-  }, []);
+
 
   return (
     <>
