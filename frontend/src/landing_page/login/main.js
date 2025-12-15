@@ -20,7 +20,7 @@ function Main() {
 
             if (res.data.user && res.data.success) {
                 // Redirect to dashboard with tempKey instead of token
-                window.location.href = `https://tradenest-online-stock-trading-platform-2.onrender.com?transfer_id=${res.data.tempKey}`;
+                window.location.href = `tradenest-dashboard.vercel.app?transfer_id=${res.data.tempKey}`;
             }else if (!res.data.user) {
                 navigate("/Login");
                 toast.error(res.data.message);

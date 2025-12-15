@@ -37,7 +37,7 @@ const HomeContent = () => {
             toast.success(`Welcome, ${res.data.user.username}!`);
           } else {
             toast.error("Token retrieval failed. Please login.");
-            window.location.href = "https://tradenest-online-stock-trading-platform-1.onrender.com/Login";
+            window.location.href = "tradenest-frontend.vercel.app/Login";
             return;
           }
         } else {
@@ -46,7 +46,7 @@ const HomeContent = () => {
 
           if (!token) {
             toast.error("No token found. Please login.");
-            window.location.href = "https://tradenest-online-stock-trading-platform-1.onrender.com/Login";
+            window.location.href = "tradenest-frontend.vercel.app/Login";
             return;
           }
 
@@ -57,7 +57,7 @@ const HomeContent = () => {
 
           if (!res.data.user) {
             toast.error("Verification failed. Please login.");
-            window.location.href = "https://tradenest-online-stock-trading-platform-1.onrender.com/Login";
+            window.location.href = "tradenest-frontend.vercel.app/Login";
             return;
           }
 
@@ -66,7 +66,7 @@ const HomeContent = () => {
       } catch (err) {
         console.error(err);
         toast.error("Verification failed. Please login.");
-        window.location.href = "https://tradenest-online-stock-trading-platform-1.onrender.com/Login";
+        window.location.href = "tradenest-frontend.vercel.app/Login";
       } finally {
         setLoading(false);
       }

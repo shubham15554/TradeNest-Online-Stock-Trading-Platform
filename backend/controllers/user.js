@@ -8,6 +8,7 @@ const tempTokens = {};
 // Format: { tempKey: { token, userId, expires } }
 
 module.exports.signup = async (req, res) => {
+  console.log("request is coming");
   try {
     const { email, password, username, createdAt } = req.body;
     if (!email || !password || !username) {
