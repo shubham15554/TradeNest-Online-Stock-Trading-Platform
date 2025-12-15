@@ -23,7 +23,7 @@ const Menu = ({username}) => {
     function handleLogoutClick(){
         localStorage.removeItem("token");
         setUser(null);
-         window.location.href = "tradenest-frontend.vercel.app/Login";
+         window.location.href = "https://trade-nest-online-stock-trading-pla.vercel.app/Login";
     }
 
   return (
