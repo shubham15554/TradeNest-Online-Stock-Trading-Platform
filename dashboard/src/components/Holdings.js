@@ -127,7 +127,9 @@ const Holdings = () => {
         </div>
 
         <div className="col">
-          <h5>{(currValue - investment).toFixed(2)} ({(((currValue - investment) / investment) * 100).toFixed(2)}%)</h5>
+          <h5>{(currValue - investment).toFixed(2)}    {investment > 0
+                  ? (((currValue - investment) / investment) * 100).toFixed(2)
+                  : "0.00"}%</h5>
           <p>P&L</p>
         </div>
 

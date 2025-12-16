@@ -74,7 +74,12 @@ const Summary = () => {
         <div className="data">
           <div className="first">
             <h3 className="profit">
-              {(currValue - investment).toFixed(2)}<small>{ (((currValue - investment) / (investment) ) * 100).toFixed(2)}%</small>
+              {(currValue - investment).toFixed(2)}
+            <small>
+                {investment > 0
+                  ? (((currValue - investment) / investment) * 100).toFixed(2)
+                  : "0.00"}%
+            </small>
             </h3>
             <p>P&L</p>
           </div>
