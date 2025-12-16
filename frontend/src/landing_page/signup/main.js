@@ -25,13 +25,13 @@ function Main() {
             toast.error(res.data.message);
             } else {
             navigate("/signup");
-            toast.error("Signup failed. Please try again.");
+            toast.error(res.data.message);
             }
 
             setForm({ username: "", email: "", password: "" });
         } catch (err) {
             navigate("/signup");
-            toast.error("Signup failed. Please try again.");
+            toast.error(err.response?.data?.message || "Signup failed");
             console.log(err.response);
         }
         }

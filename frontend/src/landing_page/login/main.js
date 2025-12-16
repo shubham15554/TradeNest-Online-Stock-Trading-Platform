@@ -26,7 +26,7 @@ function Main() {
                 toast.error(res.data.message);
             } else {
                 navigate("/Login");
-                toast.error("Signup failed. Please try again.");
+                toast.error(res.data.message || "Login failed");
             }
 
             setForm({username : "" , email : "" , password: "" });
@@ -34,7 +34,7 @@ function Main() {
         catch(err){
             navigate("/Login");
             console.log("Login failed");
-            toast.error("Login failed");
+            toast.error(err.response?.data?.message || "Login failed");
             
         }
        
