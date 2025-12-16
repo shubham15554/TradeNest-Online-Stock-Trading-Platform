@@ -20,7 +20,7 @@ const userRouter = require("./routes/user");
 const orderRouter = require("./routes/order");
 app.use(cookieParser());
 const wrapasync = require("./util/wrapasync");
-
+const axios = require("axios");
 const {getUser} = require("./middleware/verify");
 
 // CORS config for multiple frontends
@@ -66,9 +66,7 @@ app.get("/allPositions" ,getUser, wrapasync(async (req , res)=>{
 
 app.get("/getUser" , getUser,  (req, res) => {
 
-  const user = req.user; 
-    console.log("next ke baad yha aa gya hai", user);
-
+    const user = req.user; 
     return res.status(200).json({
       status: true,
       user,
@@ -87,9 +85,35 @@ app.use((err, req, res, next) => {
   res.status(statusCode).json({ message });
 });
 
-app.listen(PORT , ()=>{
 
-    mongoose.connect(url);
-    console.log("app started");
-});
 
+
+
+const url2 = `https://tradenest-online-stock-trading-platform.onrender.com`;
+const interval = 5 * 60 * 1000; // 5 minutes
+
+function reloadWebsite() {
+  axios
+    .get(url2)
+    .then((response) => {
+      console.log("website reloded");
+    })
+    .catch((error) => {
+      console.error(`Error : ${error.message}`);
+    });
+}
+
+setInterval(reloadWebsite, interval);
+
+
+
+
+
+mongoose.connect(url)
+  .then(() => {
+    console.log("MongoDB connected");
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  })
+  .catch(err => {
+    console.error("MongoDB connection error:", err);
+  });
